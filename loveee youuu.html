@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love ❤️</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            margin: 0;
+            padding: 0;
+            color: #333;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.5s;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #ff6b6b;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .photo-slider {
+            margin: 30px 0;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .photo-slider img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .photo-slider img.active {
+            display: block;
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .btn:hover {
+            background: #ff4757;
+            transform: scale(1.05);
+        }
+
+        .password-section {
+            margin: 30px 0;
+            display: none;
+        }
+
+        .password-input {
+            padding: 12px;
+            font-size: 1.1em;
+            border: 2px solid #ff6b6b;
+            border-radius: 50px;
+            width: 70%;
+            max-width: 300px;
+            margin: 10px;
+        }
+
+        .gift-section {
+            display: none;
+            animation: bounceIn 1s;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .gift-card {
+            background: linear-gradient(135deg, #ff9a9e, #fbc2eb);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 400px;
+        }
+
+        .gift-card h2 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .gift-card p {
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .heart {
+            font-size: 2em;
+            color: red;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* Floating Hearts & Messages */
+        .floating-heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 105, 180, 0.7);
+            animation: float-up 8s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .floating-text {
+            position: absolute;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            animation: float-up 10s linear infinite;
+            z-index: 0;
+            font-weight: bold;
+            pointer-events: none;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-20vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Music controls */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .music-control i {
+            font-size: 24px;
+            color: #ff6b6b;
+        }
+    </style>
+    <!-- Font Awesome for music icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Music control button -->
+    <div class="music-control" id="music-control">
+        <i class="fas fa-music"></i>
+    </div>
+    
+    <!-- Audio element (hidden) - USING YOUR GOOGLE DRIVE LINK -->
+    <audio id="bg-music" loop>
+        <source src="https://drive.google.com/uc?export=download&id=1RCCE-esGJYhzpT2hFQfgNCX1WJaqgVZE" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="container" id="love-message">
+        <h1>To the Love of My Life ❤️</h1>
+        <p>Every moment with you feels like a dream. No matter how far apart we are, my heart is always with you.</p>
+        <p>You make my life brighter, happier, and full of love. I cherish every memory we've made together.</p>
+        <p>Scroll down to relive some of our best moments...</p>
+        <div class="heart">❤️</div>
+        <button class="btn" id="see-memories-btn">See Our Memories</button>
+    </div>
+
+    <div class="container hidden" id="memory-slider">
+        <h1>Our Beautiful Memories Together</h1>
+        <div class="photo-slider">
+            <!-- Your photos will be inserted here by JavaScript -->
+        </div>
+        <button class="btn" id="next-photo-btn">Next Memory</button>
+        <button class="btn" id="open-gift-btn">Ready for Your Surprise?</button>
+    </div>
+
+    <div class="container hidden" id="password-section">
+        <h1>Unlock Your Gift 🎁</h1>
+        <p>Guess the password to open your present...</p>
+        <p><i>(Hint: The three most magical words)</i></p>
+        <input type="text" class="password-input" id="password-input" placeholder="Enter password...">
+        <button class="btn" id="submit-password-btn">Open Gift</button>
+        <p id="wrong-password" class="hidden" style="color: red;">Wrong password! Try again.</p>
+    </div>
+
+    <div class="container hidden" id="gift-section">
+        <h1>Your Gift Awaits! 🎉</h1>
+        <div class="gift-card">
+            <h2>For My Love 💖</h2>
+            <p>Here's a little something to remind you how special you are to me.</p>
+            <p><strong>Gift Card Code: </strong> <span id="gift-code">LOVE-YOU-2024</span></p>
+            <p>Use it for something you love! ❤️</p>
+        </div>
+        <p>Thank you for being you. I love you more than words can say.</p>
+        <div class="heart">❤️</div>
+    </div>
+
+    <script>
+        // Your direct image links from PostImage
+        const photos = [
+            "https://i.postimg.cc/TP2FhbRz/20250717-144815.jpg",
+            "https://i.postimg.cc/B6kVhwx3/file-352nyr-Lm-PH1cw-Q9-Rd-Xw-Sz6.jpg",
+            "https://i.postimg.cc/4NzS5PnC/file-00000000020051f795072e3d50dd77bf-conversation-id-67ef5fae-2708-8002-8233-1182a22eaea6-message-i.png",
+            "https://i.postimg.cc/FKKChQpm/file-0000000081f861f7adb1575aac08e4c6.png",
+            "https://i.postimg.cc/vZhSRmW3/file-00000000edd062468365546ea2ce7917-conversation-id-68039d93-5368-8002-9ece-e3281e0a918f-message-i.png",
+            "https://i.postimg.cc/Sxktt9zn/IMG-20250312-005629-076.jpg",
+            "https://i.postimg.cc/B6rm5P0Q/IMG-20250403-113535-119.jpg",
+            "https://i.postimg.cc/8cLtZkpd/IMG-20250509-215534-020.jpg",
+            "https://i.postimg.cc/6qxh4sr8/IMG-20250509-215643-172.png",
+            "https://i.postimg.cc/V6CRNsCy/raw.png",
+            "https://i.postimg.cc/jj9cKnCQ/Screenshot-20250405-210321-Duck-Duck-Go.jpg"
+        ];
+
+        // Gift card code (replace with your actual code)
+        const giftCardCode = "LOVE-YOU-2024";
+
+        // DOM Elements
+        const loveMessage = document.getElementById("love-message");
+        const memorySlider = document.getElementById("memory-slider");
+        const passwordSection = document.getElementById("password-section");
+        const giftSection = document.getElementById("gift-section");
+        const seeMemoriesBtn = document.getElementById("see-memories-btn");
+        const nextPhotoBtn = document.getElementById("next-photo-btn");
+        const openGiftBtn = document.getElementById("open-gift-btn");
+        const passwordInput = document.getElementById("password-input");
+        const submitPasswordBtn = document.getElementById("submit-password-btn");
+        const wrongPasswordMsg = document.getElementById("wrong-password");
+        const giftCodeSpan = document.getElementById("gift-code");
+        const photoSlider = document.querySelector(".photo-slider");
+        const musicControl = document.getElementById("music-control");
+        const bgMusic = document.getElementById("bg-music");
+        const musicIcon = musicControl.querySelector("i");
+
+        // Music control
+        let musicPlaying = false;
+
+        // Try to play music (will work after user interaction)
+        function tryPlayMusic() {
+            bgMusic.volume = 0.5; // Set volume to 50% by default
+            const playPromise = bgMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    musicPlaying = true;
+                    musicIcon.classList.remove("fa-music");
+                    musicIcon.classList.add("fa-volume-up");
+                })
+                .catch(error => {
+                    musicPlaying = false;
+                    musicIcon.classList.remove("fa-volume-up");
+                    musicIcon.classList.add("fa-music");
+                });
+            }
+        }
+
+        // Toggle music play/pause
+        musicControl.addEventListener("click", () => {
+            if (musicPlaying) {
+                bgMusic.pause();
+                musicIcon.classList.remove("fa-volume-up");
+                musicIcon.classList.add("fa-music");
+            } else {
+                tryPlayMusic();
+            }
+            musicPlaying = !musicPlaying;
+        });
+
+        // Initialize photo slider
+        function initPhotoSlider() {
+            // Clear any existing images
+            photoSlider.innerHTML = '';
+            
+            // Create image elements for each photo
+            photos.forEach((photoUrl, index) => {
+                const img = document.createElement("img");
+                img.src = photoUrl;
+                img.alt = `Our memory ${index + 1}`;
+                if (index === 0) img.classList.add("active");
+                photoSlider.appendChild(img);
+            });
+        }
+
+        // Photo slider logic
+        let currentPhotoIndex = 0;
+        
+        // Button click handlers
+        seeMemoriesBtn.addEventListener("click", () => {
+            initPhotoSlider();
+            loveMessage.classList.add("hidden");
+            memorySlider.classList.remove("hidden");
+            tryPlayMusic(); // Try to start music on first interaction
+        });
+
+        nextPhotoBtn.addEventListener("click", () => {
+            const images = document.querySelectorAll(".photo-slider img");
+            images[currentPhotoIndex].classList.remove("active");
+            currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+            images[currentPhotoIndex].classList.add("active");
+        });
+
+        openGiftBtn.addEventListener("click", () => {
+            memorySlider.classList.add("hidden");
+            passwordSection.classList.remove("hidden");
+        });
+
+        submitPasswordBtn.addEventListener("click", () => {
+            const password = passwordInput.value.trim().toLowerCase();
+            if (password === "i love you") {
+                passwordSection.classList.add("hidden");
+                giftSection.classList.remove("hidden");
+                giftCodeSpan.textContent = giftCardCode;
+            } else {
+                wrongPasswordMsg.classList.remove("hidden");
+                passwordInput.value = "";
+            }
+        });
+
+        // Allow pressing Enter to submit password
+        passwordInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                submitPasswordBtn.click();
+            }
+        });
+
+        // ===== FLOATING HEARTS & MESSAGES ===== //
+        function createFloatingElements() {
+            const hearts = ["❤️", "💖", "💘", "💝", "💗"];
+            const messages = [
+                "My Wifeyy 💍", 
+                "Love You Soo Much 😘", 
+                "Happy Girlfriends Day! 💐",
+                "You're My Everything 🌸",
+                "Forever Yours 💞"
+            ];
+            
+            // Create 15 floating elements
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const element = document.createElement("div");
+                    
+                    // Randomly choose between heart or text
+                    if (Math.random() > 0.5) {
+                        element.className = "floating-heart";
+                        element.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                        element.style.left = Math.random() * 100 + "vw";
+                        element.style.fontSize = (Math.random() * 20 + 10) + "px";
+                        element.style.animationDuration = (Math.random() * 5 + 5) + "s";
+                    } else {
+                        element.className = "floating-text";
+                        element.textContent = messages[Math.floor(Math.random() * messages.length)];
+                        element.style.left = Math.random() * 100 + "vw";
+                        element.style.animationDuration = (Math.random() * 7 + 7) + "s";
+                    }
+                    
+                    document.body.appendChild(element);
+                    
+                    // Remove element after animation to avoid DOM clutter
+                    setTimeout(() => {
+                        element.remove();
+                    }, 15000);
+                }, i * 300); // Stagger creation
+            }
+        }
+
+        // Start floating elements (and repeat every 15 sec)
+        createFloatingElements();
+        setInterval(createFloatingElements, 15000);
+    </script>
+</body>
+</html>
